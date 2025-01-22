@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ana Sayfa</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            background-image: url('https://forum.pardus.org.tr/uploads/default/original/1X/5f23107776d5fd6c58c060cd60c6ef323b6d62be.jpg');
+            background-size: cover;
+            color: #ffffff;
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+        }
+		
+		}
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 2;
+      cursor: pointer;
+    }
+    #main-content {
+      display: none;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: red;
+    }
+    .api-list {
+      list-style: none;
+      padding: 0;
+    }
+    .api-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid red;
+      border-radius: 8px;
+      background: rgba(34, 34, 34, 0.8);
+    }
+    .buttons {
+      margin-top: 10px;
+    }
+    .button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .visit-button {
+      background-color: #ff4500;
+      color: white;
+    }
+    .copy-button {
+      background-color: #28A745;
+      color: white;
+    }
+    .button:hover {
+      opacity: 0.9;
+    }
+    audio {
+      display: none;
+    }
+    .music-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #FF4500;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .music-toggle:hover {
+      background-color: #E63E00;
+    }
+    .discord-button {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      padding: 10px 0;
+      background-color: #7289DA;
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+    .discord-button:hover {
+      background-color: #5b6eae;
+    }
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .sidebar img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .dropdown {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .dropdown button {
+            width: 100%;
+            background-color: #ff0000;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Poppins', Arial, sans-serif;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .dropdown button:hover {
+            background-color: #ff4444;
+            transform: scale(1.05);
+        }
+        .dropdown-content {
+            display: none;
+            background-color: #1e1e1e;
+            border-radius: 4px;
+            margin-top: 5px;
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #ff0000;
+            font-family: 'Poppins', Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .dropdown-content a:hover {
+            background-color: #575757;
+            color: #ff0000;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        h1 {
+            color: #ff0000;
+            text-shadow: 2px 2px #000000;
+            text-align: center;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 48px;
+            animation: rgbColor 4s infinite;
+        }
+        @keyframes rgbColor {
+            0% { color: red; }
+            33% { color: green; }
+            66% { color: blue; }
+            100% { color: red; }
+        }
+        .content p {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .menu {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .menu h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #ff0000;
+        }
+        .menu p {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+        .telegram-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #0088cc;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .telegram-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+        .telegram-btn img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+	 <script>
+        // Sağ tıklamayı devre dışı bırak
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // CTRL+U ve F12 tuşlarını devre dışı bırak
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'u' || event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+		</script>
+</head>
+
+<body>
+<div id="overlay" onclick="startSite()">Ekrana Tıkla</div>
+  <div id="main-content">
+    <div class="container">
+        <div class="sidebar">
+            <img src="https://i.hizliresim.com/lmafred.png" alt="Logo"> 
+            <div class="dropdown">
+                <button>Mernis 2025</button>
+                <div class="dropdown-content">
+                    <a href="/adsoyad">Ad Soyad Sorgu</a>
+                    <a href="/tc">TC Sorgu</a>
+                    <a href="/aile">Aile Sorgu</a>
+                    <a href="/sulale">SoyAğaç Sorgu</a>
+                    <a href="/adres">Adres Sorgu</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button>Gsm Çözümleri</button>
+                <div class="dropdown-content">
+                    <a href="/gsm">GSM Sorgu</a>
+                    <a href="/tcgsm">TC - GSM Sorgu</a>
+                </div>
+                
+            </div>
+
+             <!-- Yeni Database Dropdown -->
+             <div class="dropdown">
+                <button>Database</button>
+                <div class="dropdown-content">
+                    <a href="/papara">Papara Sorgu</a>
+                    <a href="/eczane">Eczane Sorgu</a>
+                    <a href="/plaka">Plaka Sorgu</a>
+                </div>
+            </div>
+			 <div class="dropdown">
+                <button>TOOL</button>
+                <div class="dropdown-content">
+                    <a href="/kimlikolusturucu">KİMLİK OLUŞTURUCU</a>
+                    <a href="/iban">İban Çözümleme</a>
+                    <a href="/smsbomber">Sms Bomber</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button>Eğitim Sorgu</button>
+                <div class="dropdown-content">
+                    <a href="/mevzun">Mevzuniyet Sorgu</a>
+            </div>   
+         </div>            
+        </div>
+        <div class="content">
+            <h1>FLC İLEGAL</h1>
+                                                
+            <div class="menu">                                                                                                
+                <h2>Türkiye Saati</h2>
+                <p id="istanbul-time-content" style="font-size: 22px; animation: rgbColor 3s infinite;">...</p>
+            </div>
+            <div class="menu">
+                <h2>Londra Saati</h2>
+                <p id="london-time-content" style="font-size: 22px; animation: rgbColor 3s infinite;">...</p>
+            </div>
+            <div class="menu">
+                <h2>Amsterdam Saati</h2>
+                <p id="amsterdam-time-content" style="font-size: 22px; animation: rgbColor 3s infinite;">...</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://t.me/flcilegalgenel" class="telegram-btn" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Telegram_2019_Logo.svg" alt="Telegram">
+    </a>
+    <script>
+        function updateTime(city, elementId, timeZone) {
+            const options = {
+                timeZone: timeZone,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            };
+            const formatter = new Intl.DateTimeFormat('tr-TR', options);
+            const timeElementContent = document.getElementById(elementId);
+            const currentTime = formatter.format(new Date());
+            timeElementContent.textContent = currentTime;
+        }
+
+        setInterval(function() {
+            updateTime('Turkey', 'istanbul-time-content', 'Europe/Istanbul');
+            updateTime('London', 'london-time-content', 'Europe/London');
+            updateTime('Amsterdam', 'amsterdam-time-content', 'Europe/Amsterdam');
+        }, 1000);
+        
+
+        // Initialize time display
+        updateTime('Turkey', 'istanbul-time-content', 'Europe/Istanbul');
+        updateTime('London', 'london-time-content', 'Europe/London');
+        updateTime('Amsterdam', 'amsterdam-time-content', 'Europe/Amsterdam');
+    </script>
+	
+	 <audio id="background-music" autoplay loop>
+      <source src="https://cdn.glitch.global/273cc6bf-91e6-4afb-963d-e6c4e9b05f87/arkamüzik.mp3?v=1734308023882" type="audio/mpeg">
+      Tarayıcınız müzik çalmayı desteklemiyor.
+    </audio>
+
+    <!-- Şarkıyı Kapat/Aç Butonu -->
+    <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">Şarkıyı Kapat</button>
+ <script>
+    function startSite() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      const audio = document.getElementById('background-music');
+      audio.play();
+    }
+
+    function copyToClipboard(link) {
+      navigator.clipboard.writeText(link).then(() => {
+        alert("Link kopyalandı: " + link);
+      }).catch((err) => {
+        alert("Link kopyalanamadı: " + err);
+      });
+    }
+
+    function toggleMusic() {
+      const audio = document.getElementById('background-music');
+      const button = document.getElementById('musicToggle');
+      if (audio.paused) {
+        audio.play();
+        button.textContent = "Şarkıyı Kapat";
+      } else {
+        audio.pause();
+        button.textContent = "Şarkıyı Aç";
+      }
+    }
+  </script>
+<body>
+
+<script id="_wau52p">var _wau = _wau || []; _wau.push(["dynamic", "458eprleug", "52p", "c4302bffffff", "small"]);</script><script async src="https://waust.at/d.js"></script>
+</body>
+</body>
+</html>
+
+</body>
+</html>

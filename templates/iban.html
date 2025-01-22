@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+</head>
+<body>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+    </nav>
+    <h1>IBAN Sorgulama</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBAN Çözümleme</title>
+    <style>
+	
+        body {
+            background-image: url('https://forum.pardus.org.tr/uploads/default/original/1X/5f23107776d5fd6c58c060cd60c6ef323b6d62be.jpg');
+            background-size: cover;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff0000;
+            text-shadow: 2px 2px #000000;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            border-radius: 4px;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ff0000;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        table, th, td {
+            border: 1px solid #ff0000;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ff0000;
+        }
+        #loading {
+            display: none;
+            color: #ff0000;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+	
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            text-align: center;
+            color: #343a40;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #80bdff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            color: #495057;
+        }
+
+        .result p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+	 <script>
+        // Sağ tıklamayı devre dışı bırak
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // CTRL+U ve F12 tuşlarını devre dışı bırak
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'u' || event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+		</script>
+</head>
+<body>
+    <div class="container">
+        <h1>IBAN Çözümleme</h1>
+        <form id="ibanForm">
+            <label for="iban">IBAN Numarası:</label>
+            <input type="text" id="iban" placeholder="IBAN numaranızı girin">
+            <button type="button" onclick="solveIBAN()">Çözümle</button>
+            <div id="result" class="result" style="display: none;"></div>
+            <div id="error" class="error" style="display: none;"></div>
+        </form>
+    </div>
+
+    <script>
+        function solveIBAN() {
+            const iban = document.getElementById('iban').value.trim();
+            const resultContainer = document.getElementById('result');
+            const errorContainer = document.getElementById('error');
+
+            resultContainer.style.display = 'none';
+            errorContainer.style.display = 'none';
+
+            if (!iban || iban.length < 15 || iban.length > 34) {
+                errorContainer.textContent = 'Lütfen geçerli bir IBAN giriniz.';
+                errorContainer.style.display = 'block';
+                return;
+            }
+
+            // Örnek çözümleme
+            const country = iban.slice(0, 2);
+            const checksum = iban.slice(2, 4);
+            const bankCode = iban.slice(4, 8);
+            const accountNumber = iban.slice(8);
+
+            resultContainer.innerHTML = `
+                <p><strong>Ülke Kodu:</strong> ${country}</p>
+                <p><strong>Kontrol Basamakları:</strong> ${checksum}</p>
+                <p><strong>Banka Kodu:</strong> ${bankCode}</p>
+                <p><strong>Hesap Numarası:</strong> ${accountNumber}</p>
+            `;
+            resultContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

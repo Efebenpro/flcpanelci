@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMS Gönderici</title>
+    <style>
+        @keyframes colorChange {
+            0% { color: rgb(255, 0, 0); }
+            33% { color: rgb(0, 255, 0); }
+            66% { color: rgb(0, 0, 255); }
+            100% { color: rgb(255, 0, 0); }
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://forum.pardus.org.tr/uploads/default/original/1X/5f23107776d5fd6c58c060cd60c6ef323b6d62be.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h2 {
+            font-size: 3em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out, colorChange 5s infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        label {
+            font-size: 1.5em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            animation: colorChange 5s infinite;
+        }
+        input[type="text"], input[type="number"] {
+            border: 2px solid rgb(0, 0, 255);
+            padding: 15px;
+            width: 50%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        input[type="submit"] {
+            background-color: rgb(0, 0, 255);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        input[type="submit"]:hover {
+            background-color: rgb(0, 255, 0);
+            transform: scale(1.1);
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        nav a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: rgb(255, 0, 0);
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 2s ease-in-out;
+        }
+        #result {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        #keyForm {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        // Sağ tıklamayı devre dışı bırak
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // CTRL+U ve F12 tuşlarını devre dışı bırak
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'u' || event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+
+        function checkKey(event) {
+            event.preventDefault();
+            const key = document.getElementById('key').value;
+            if (key === 'flc') {
+                document.getElementById('keyForm').style.display = 'none';
+                document.getElementById('smsForm').style.display = 'block';
+            } else {
+                alert('Yanlış anahtar!');
+            }
+        }
+
+        async function sendSMS(event) {
+            event.preventDefault();
+            const number = document.getElementById('number').value;
+            const amount = document.getElementById('amount').value;
+            const response = await fetch(`https://platin-b-api.glitch.me/send-sms?number=${number}`);
+            
+            const result = document.getElementById('result');
+            if (response.ok) {
+                result.textContent = "SMS'ler başarıyla gönderildi!";
+                result.style.color = "rgb(0, 255, 0)"; // Yeşil
+            } else {
+                result.textContent = "SMS'ler gönderilemedi!";
+                result.style.color = "rgb(255, 0, 0)"; // Kırmızı
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+        <a href="#sms">SMS Gönderici</a>
+        <a href="#about">Hakkında</a>
+    </nav>
+
+    <div class="container" id="keyForm">
+        <h2>Anahtar Girişi</h2>
+        <form onsubmit="checkKey(event)">
+            <label for="key">Anahtar:</label>
+            <input type="text" id="key" required><br><br>
+            <input type="submit" value="Giriş">
+        </form>
+    </div>
+
+    <div class="container" id="smsForm" style="display:none;">
+        <h2>SMS Gönderici</h2>
+        <form onsubmit="sendSMS(event)">
+            <label for="number">Numara:</label>
+            <input type="text" id="number" name="number" required><br><br>
+            
+            <label for="amount">Miktar:</label>
+            <input type="number" id="amount" name="amount" max="150" required><br><br>
+            
+            <input type="submit" value="Gönder">
+        </form>
+        <div id="result"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLC İLLEGAL</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e1e1e, #121212);
+            color: white;
+            font-family: 'Poppins', Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            border: 5px solid #FFD700;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+        }
+        h1 {
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+            margin-bottom: 20px;
+        }
+        .key-input {
+            margin-top: 20px;
+        }
+        .key-input input {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            outline: none;
+            background-color: #121212;
+            color: #FFD700;
+            width: 300px;
+            text-align: center;
+        }
+        .key-input input::placeholder {
+            color: #FFD700;
+        }
+        .key-input button {
+            margin-top: 15px;
+            background-color: #FFD700;
+            color: #121212;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .key-input button:hover {
+            background-color: #FFA500;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.5);
+        }
+        .menu {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+        }
+        .menu h2 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+        }
+        .telegram-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg') no-repeat center center;
+            background-size: contain;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .telegram-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+	 <script>
+        // Sağ tıklamayı devre dışı bırak
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // CTRL+U ve F12 tuşlarını devre dışı bırak
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'u' || event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+		</script>
+    <script>
+        function checkKey(event) {
+            event.preventDefault();
+            const key = document.querySelector('input[name="key"]').value;
+            const menu = document.querySelector('.menu');
+            if (key === 'flc') {
+                document.querySelector('.key-input').style.display = 'none';
+                menu.style.display = 'flex';
+                menu.innerHTML = '<h2>Başarıyla Yönlendiriliyorsunuz...</h2>';
+                setTimeout(() => {
+                    window.location.href = '/anasayfa';
+                }, 3000);
+            } else {
+                menu.style.display = 'flex';
+                menu.innerHTML = '<h2>Geçersiz anahtar!</h2>';
+                setTimeout(() => {
+                    menu.style.display = 'none';
+                }, 3000);
+            }
+        }
+		</script>
+    </script>
+</head>
+<body>
+    <img src="https://i.hizliresim.com/lmafred.png" alt="FLC">
+    <h1>FLC İLLEGAL</h1>
+    <form class="key-input" onsubmit="checkKey(event)">
+        <input type="text" name="key" placeholder="Lütfen Key Giriniz" required>
+        <br>
+        <button type="submit">Gönder</button>
+    </form>
+    <div class="menu"></div>
+    <a href="https://t.me/flcilegalgenel" target="_blank">
+        <button class="telegram-button"></button>
+    </a>
+</body>
+</html>

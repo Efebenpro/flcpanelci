@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aile Sorgulama</title>
+    <style>
+        body {
+            background-image: url('https://forum.pardus.org.tr/uploads/default/original/1X/5f23107776d5fd6c58c060cd60c6ef323b6d62be.jpg');
+            background-size: cover;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff0000;
+            text-shadow: 2px 2px #000000;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            border-radius: 4px;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ff0000;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        table, th, td {
+            border: 1px solid #ff0000;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ff0000;
+        }
+        #loading {
+            display: none;
+            color: #ff0000;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+	 <script>
+        // Sağ tıklamayı devre dışı bırak
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // CTRL+U ve F12 tuşlarını devre dışı bırak
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'u' || event.key === 'F12') {
+                event.preventDefault();
+            }
+        });
+		</script>
+</head>
+<body>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+    </nav>
+    <h1>Aile Sorgulama</h1>
+    <form method="post" action="/aile_sorgula">
+        <label for="tc">TC Kimlik Numarası:</label>
+        <input type="text" id="tc" name="tc" required>
+        <button type="submit" onclick="showLoading()">Sorgula</button>
+    </form>
+    <div id="loading">Yükleniyor...</div>
+    {% if results %}
+    <table>
+        <tr>
+            <th>Yakınlık</th>
+            <th>TC</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Baba Adı</th>
+            <th>Anne Adı</th>
+            <th>Doğum Tarihi</th>
+            <th>Adres İl</th>
+            <th>Adres İlçe</th>
+            <th>Cinsiyet</th>
+        </tr>
+        {% for item in results %}
+        <tr>
+            <td>{{ item.YAKINLIK }}</td>
+            <td>{{ item.TC }}</td>
+            <td>{{ item.AD }}</td>
+            <td>{{ item.SOYAD }}</td>
+            <td>{{ item.BABAADI }}</td>
+            <td>{{ item.ANNEADI }}</td>
+            <td>{{ item.DOGUMTARIHI }}</td>
+            <td>{{ item.ADRESIL }}</td>
+            <td>{{ item.ADRESILCE }}</td>
+            <td>{{ item.CINSIYET }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
