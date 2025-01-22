@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Soyad ve TC Sorgu</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+            display: flex;
+            margin: 0;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #495057;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        .table-responsive {
+            width: 100%;
+            max-width: 800px;
+        }
+        table {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center mb-4">Ad Soyad ve TC Sorgu</h1>
+
+    <!-- Ad Soyad Sorgu Formu -->
+    <div class="form-container">
+        <h4 class="text-center">Ad Soyad Sorgulama</h4>
+        <form id="queryForm">
+            <input required maxlength="35" minlength="2" class="form-control mb-3" type="text" autocomplete="off" name="txtad" placeholder="Ad Giriniz">
+            <input required maxlength="35" minlength="2" class="form-control mb-3" type="text" autocomplete="off" name="txtsoyad" placeholder="Soyad Giriniz">
+            <button id="sorgula" type="submit" class="btn btn-outline-primary mb-3">Ad Soyad Sorgula</button>
+        </form>
+        <div class="table-responsive">
+            <table id="resultTable" class="table table-hover table-dark" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>TC</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>GSM</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Adres İl</th>
+                        <th>Adres İlçe</th>
+                        <th>Anne Adı</th>
+                        <th>Anne TC</th>
+                        <th>Baba Adı</th>
+                        <th>Baba TC</th>
+                        <th>Doğum Yeri</th>
+                        <th>Memleket İl</th>
+                        <th>Memleket İlçe</th>
+                        <th>Memleket Köy</th>
+                        <th>Cinsiyet</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TC Sorgu Formu -->
+    <div class="form-container">
+        <h4 class="text-center">TC Sorgulama</h4>
+        <form id="tcQueryForm">
+            <input required maxlength="11" minlength="11" class="form-control mb-3" type="text" autocomplete="off" name="txttc" placeholder="TC Kimlik Numarası Giriniz">
+            <button id="tcSorgula" type="submit" class="btn btn-outline-primary mb-3">TC Sorgula</button>
+        </form>
+        <div class="table-responsive">
+            <table id="tcResultTable" class="table table-hover table-dark" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>TC</th>
+                        <th>Adı</th>
+                        <th>Soyadı</th>
+                        <th>Baba Adı</th>
+                        <th>Anne Adı</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Memleket İl</th>
+                        <th>Memleket İlçe</th>
+                        <th>Memleket Köy</th>
+                        <th>Cinsiyet</th>
+                    </tr>
+                </thead>
+                <tbody id="tcResultBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Ad Soyad sorgu formu
+        document.getElementById('queryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const ad = document.querySelector('input[name="txtad"]').value;
+            const soyad = document.querySelector('input[name="txtsoyad"]').value;
+            if (!ad || !soyad) {
+                alert("Lütfen hem ad hem de soyad girin.");
+                return;
+            }
+
+            try {
+                const response = await axios.post('/adsoyad', {
+                    ad,
+                    soyad
+                });
+                const data = response.data;
+
+                const resultTable = document.getElementById('resultTable');
+                const resultBody = document.getElementById('resultBody');
+                resultBody.innerHTML = '';
+
+                if (data.veri && data.veri.length > 0) {
+                    data.veri.forEach(result => {
+                        const row = `<tr>
+                            <td>${result.TC}</td>
+                            <td>${result.AD}</td>
+                            <td>${result.SOYAD}</td>
+                            <td>${result.GSM}</td>
+                            <td>${result.DOGUMTARIHI}</td>
+                            <td>${result.ADRESIL}</td>
+                            <td>${result.ADRESILCE}</td>
+                            <td>${result.ANNEADI}</td>
+                            <td>${result.ANNETC}</td>
+                            <td>${result.BABAADI}</td>
+                            <td>${result.BABATC}</td>
+                            <td>${result.DOGUMYERI}</td>
+                            <td>${result.MEMLEKETIL}</td>
+                            <td>${result.MEMLEKETILCE}</td>
+                            <td>${result.MEMLEKETKOY}</td>
+                            <td>${result.CINSIYET}</td>
+                        </tr>`;
+                        resultBody.innerHTML += row;
+                    });
+                    resultTable.style.display = 'table';
+                } else {
+                    alert('Sonuç bulunamadı!');
+                }
+            } catch (error) {
+                console.error('Hata oluştu:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+
+        // TC sorgu formu
+        document.getElementById('tcQueryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const tc = document.querySelector('input[name="txttc"]').value;
+            if (!tc || tc.length !== 11) {
+                alert("Lütfen geçerli bir TC Kimlik Numarası girin.");
+                return;
+            }
+
+            try {
+                const response = await axios.post('/tc', {
+                    tc
+                });
+                const data = response.data;
+
+                const tcResultTable = document.getElementById('tcResultTable');
+                const tcResultBody = document.getElementById('tcResultBody');
+                tcResultBody.innerHTML = '';
+
+                if (data.veri && data.veri.length > 0) {
+                    data.veri.forEach(result => {
+                        const row = `<tr>
+                            <td>${result.TC}</td>
+                            <td>${result.AD}</td>
+                            <td>${result.SOYAD}</td>
+                            <td>${result.BABAADI}</td>
+                            <td>${result.ANNEADI}</td>
+                            <td>${result.DOGUMTARIHI}</td>
+                            <td>${result.MEMLEKETIL}</td>
+                            <td>${result.MEMLEKETILCE}</td>
+                            <td>${result.MEMLEKETKOY}</td>
+                            <td>${result.CINSIYET}</td>
+                        </tr>`;
+                        tcResultBody.innerHTML += row;
+                    });
+                    tcResultTable.style.display = 'table';
+                } else {
+                    alert('Sonuç bulunamadı!');
+                }
+            } catch (error) {
+                console.error('Hata oluştu:', error);
+                alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
